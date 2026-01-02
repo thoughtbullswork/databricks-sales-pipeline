@@ -1,0 +1,4 @@
+env: dev
+catalog: dev_catalog
+storage_path: s3://dev-sales-data
+cluster_workers: 2
