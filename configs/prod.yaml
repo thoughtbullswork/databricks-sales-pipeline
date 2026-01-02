@@ -1,0 +1,4 @@
+env: prod
+catalog: prod_catalog
+storage_path: s3://prod-sales-data
+cluster_workers: 5
