@@ -1,0 +1,34 @@
+name: Deploy to Databricks
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.12'
+
+      - name: Install dependencies
+        run: |
+          pip install databricks-cli dbx
+
+      - name: Configure Databricks
+        run: |
+          databricks configure --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
+
+      - name: Upload notebooks
+        run: |
+          databricks workspace import_dir notebooks /Shared/pipeline -o
+
+      - name: Deploy Workflow Job
+        run: |
+          databricks jobs create --json-file workflows/job.yml
